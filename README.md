@@ -74,7 +74,7 @@ const reducer = (state = [], action) => {
 Let's make an action creator
 
 ```js
-const forgiveGrudge = id => {
+const forgiveGrudge = (id) => {
   dispatch({
     type: GRUDGE_FORGIVE,
     payload: {
@@ -88,7 +88,7 @@ We'll also update the reducer here.
 
 ```js
 if (action.type === GRUDGE_FORGIVE) {
-  return state.map(grudge => {
+  return state.map((grudge) => {
     if (grudge.id === action.payload.id) {
       return { ...grudge, forgiven: !grudge.forgiven };
     }
@@ -143,7 +143,7 @@ const reducer = (state = [], action) => {
   }
 
   if (action.type === GRUDGE_FORGIVE) {
-    return state.map(grudge => {
+    return state.map((grudge) => {
       if (grudge.id === action.payload.id) {
         return { ...grudge, forgiven: !grudge.forgiven };
       }
@@ -171,7 +171,7 @@ export const GrudgeProvider = ({ children }) => {
   );
 
   const toggleForgiveness = useCallback(
-    id => {
+    (id) => {
       dispatch({
         type: GRUDGE_FORGIVE,
         payload: {
@@ -235,7 +235,7 @@ const Grudges = ({ grudges = [] }) => {
   return (
     <section className="Grudges">
       <h2>Grudges ({grudges.length})</h2>
-      {grudges.map(grudge => (
+      {grudges.map((grudge) => (
         <Grudge key={grudge.id} grudge={grudge} />
       ))}
     </section>
@@ -258,7 +258,7 @@ const Grudges = () => {
   return (
     <section className="Grudges">
       <h2>Grudges ({grudges.length})</h2>
-      {grudges.map(grudge => (
+      {grudges.map((grudge) => (
         <Grudge key={grudge.id} grudge={grudge} />
       ))}
     </section>
@@ -373,7 +373,7 @@ const defaultGrudges = {
 export const GrudgeProvider = ({ children }) => {
   const [grudges, setGrudges] = useState({});
 
-  const addGrudge = grudge => {
+  const addGrudge = (grudge) => {
     grudge.id = id();
     setGrudges({
       [grudge.id]: grudge,
@@ -381,7 +381,7 @@ export const GrudgeProvider = ({ children }) => {
     });
   };
 
-  const toggleForgiveness = id => {
+  const toggleForgiveness = (id) => {
     const newGrudges = { ...grudges };
     const target = grudges[id];
     target.forgiven = !target.forgiven;
@@ -431,7 +431,9 @@ const reducer = (state, action) => {
   if (action.type === FORGIVE_GRUDGE) {
     return {
       past: [],
-      present: state.present.filter(grudge => grudge.id !== action.payload.id),
+      present: state.present.filter(
+        (grudge) => grudge.id !== action.payload.id
+      ),
       future: []
     };
   }
@@ -554,7 +556,7 @@ export const reducer = (state = [], action) => {
   }
 
   if (action.type === GRUDGE_FORGIVE) {
-    return state.map(grudge => {
+    return state.map((grudge) => {
       if (grudge.id === action.payload.id) {
         return { ...grudge, forgiven: !grudge.forgiven };
       }
@@ -585,10 +587,9 @@ export const Provider = ({ reducer, initialState, children }) => {
 Next, we'll make the `connect` function.
 
 ```js
-export const connect = (
-  mapStateToProps,
-  mapDispatchToProps
-) => Component => ownProps => {
+export const connect = (mapStateToProps, mapDispatchToProps) => (Component) => (
+  ownProps
+) => {
   const { state, dispatch } = useContext(Context);
 
   let stateProps = {};
@@ -645,7 +646,7 @@ ReactDOM.render(
 import { connect } from './connect';
 import Grudges from './Grudges';
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   console.log({ state });
   return { grudges: state };
 };
@@ -685,7 +686,7 @@ const Grudges = ({ grudges }) => {
   return (
     <section className="Grudges">
       <h2>Grudges ({grudges.length})</h2>
-      {grudges.map(grudge => (
+      {grudges.map((grudge) => (
         <GrudgeContainer key={grudge.id} grudge={grudge} />
       ))}
     </section>
